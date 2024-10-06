@@ -63,8 +63,9 @@ export default defineComponent({
         return;
       }
 
+      // Uso de la variable de entorno para la URL base
       const res = await fetch(
-        `https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`,
+        `${process.env.VUE_APP_API}/PublicHolidays/${year}/${countryCode}`,
       );
       this.holidays = await res.json();
     },
@@ -72,8 +73,6 @@ export default defineComponent({
     // Método para volver a la página anterior o a la vista principal
     goBack() {
       this.$router.back(); // Vuelve a la página anterior
-      // Si prefieres redirigir a la vista principal, usa:
-      // this.$router.push('/');
     },
   },
   mounted() {

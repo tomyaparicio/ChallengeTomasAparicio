@@ -24,9 +24,9 @@ export default defineComponent({
   methods: {
     // Función para obtener países aleatorios y su próximo feriado
     async fetchRandomCountries() {
-      // Obtener la lista de países disponibles
+      // Obtener la lista de países disponibles usando la variable de entorno
       const resCountries = await fetch(
-        'https://date.nager.at/api/v3/AvailableCountries',
+        `${process.env.VUE_APP_API}/AvailableCountries`
       );
       const countries = await resCountries.json();
 
@@ -36,9 +36,9 @@ export default defineComponent({
       // Obtener el próximo feriado para cada país
       this.randomCountries = await Promise.all(
         selectedCountries.map(async (country) => {
-          // Solicitar los feriados del país específico
+          // Solicitar los feriados del país específico usando la variable de entorno
           const resHolidays = await fetch(
-            `https://date.nager.at/api/v3/NextPublicHolidays/${country.countryCode}`,
+            `${process.env.VUE_APP_API}/NextPublicHolidays/${country.countryCode}`
           );
           const holidays = await resHolidays.json();
 
@@ -51,7 +51,7 @@ export default defineComponent({
             holidayName: nextHoliday ? nextHoliday.name : 'No upcoming holiday',
             date: nextHoliday ? nextHoliday.date : 'N/A',
           };
-        }),
+        })
       );
     },
 

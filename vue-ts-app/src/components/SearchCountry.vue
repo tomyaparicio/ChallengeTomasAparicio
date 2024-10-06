@@ -7,9 +7,9 @@
     />
     <ul>
       <li v-for="country in filteredCountries" :key="country.countryCode">
-        <router-link :to="`/country/${country.countryCode}`">{{
-          country.name
-        }}</router-link>
+        <router-link :to="`/country/${country.countryCode}`">
+          {{ country.name }}
+        </router-link>
       </li>
     </ul>
   </div>
@@ -39,9 +39,7 @@ export default defineComponent({
   },
   methods: {
     async fetchCountries() {
-      const res = await fetch(
-        'https://date.nager.at/api/v3/AvailableCountries',
-      );
+      const res = await fetch(`${process.env.VUE_APP_API}/AvailableCountries`);
       this.countries = await res.json();
     },
   },

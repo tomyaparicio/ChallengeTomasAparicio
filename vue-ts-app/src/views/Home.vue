@@ -80,9 +80,7 @@ export default defineComponent({
 
     // Obtiene la lista de países de la API
     async fetchCountries() {
-      const res = await fetch(
-        'https://date.nager.at/api/v3/AvailableCountries',
-      );
+      const res = await fetch(`${process.env.VUE_APP_API}/AvailableCountries`);
       this.countries = await res.json(); // Guarda la lista de países en `countries`
     },
 
@@ -90,7 +88,7 @@ export default defineComponent({
     async fetchRandomCountries() {
       // Primero obtenemos la lista de países
       const resCountries = await fetch(
-        'https://date.nager.at/api/v3/AvailableCountries',
+        `${process.env.VUE_APP_API}/AvailableCountries`,
       );
       const countries: Country[] = await resCountries.json();
 
@@ -101,7 +99,7 @@ export default defineComponent({
       const randomCountriesWithHolidays = await Promise.all(
         selectedCountries.map(async (country) => {
           const resHolidays = await fetch(
-            `https://date.nager.at/api/v3/NextPublicHolidays/${country.countryCode}`,
+            `${process.env.VUE_APP_API}/NextPublicHolidays/${country.countryCode}`,
           );
           const holidays = await resHolidays.json();
           const nextHoliday = holidays[0]; // Tomamos el primer feriado (el más próximo)
@@ -138,7 +136,7 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   padding: 20px;
-  background-color: #f0f4f8; /* Fondo claro con un toque de azul */
+  background-color: #f0f4f8;
   color: #333;
   font-family: 'Roboto', Arial, sans-serif;
 }
@@ -161,7 +159,7 @@ export default defineComponent({
 }
 
 .search-input:focus {
-  border-color: #007bff; /* Azul brillante cuando se enfoca */
+  border-color: #007bff;
   outline: none;
 }
 
@@ -175,7 +173,7 @@ export default defineComponent({
 .country-button {
   width: 100%;
   padding: 12px;
-  background-color: #007bff; /* Azul brillante */
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 8px;
@@ -187,8 +185,8 @@ export default defineComponent({
 }
 
 .country-button:hover {
-  background-color: #0056b3; /* Un azul más oscuro al pasar el ratón */
-  transform: scale(1.05); /* Aumenta ligeramente el tamaño al pasar el ratón */
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
 
 /* Widget de países aleatorios */
@@ -198,7 +196,7 @@ export default defineComponent({
   border: 2px solid #d0d5db;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Títulos del widget */
@@ -214,7 +212,7 @@ export default defineComponent({
 .random-country-card {
   padding: 15px;
   margin-bottom: 20px;
-  background-color: #fafafa; /* Fondo claro */
+  background-color: #fafafa;
   border: 2px solid #e0e0e0;
   border-radius: 10px;
   text-align: center;
@@ -224,7 +222,7 @@ export default defineComponent({
 }
 
 .random-country-card:hover {
-  background-color: #ff5722; /* Fondo naranja al pasar el ratón */
+  background-color: #ff5722;
   color: white;
   border-color: #ff5722;
 }
