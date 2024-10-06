@@ -22,11 +22,9 @@ export default defineComponent({
     };
   },
   methods: {
-    // Función para obtener países aleatorios y su próximo feriado
     async fetchRandomCountries() {
-      // Obtener la lista de países disponibles usando la variable de entorno
       const resCountries = await fetch(
-        `${process.env.VUE_APP_API}/AvailableCountries`
+        `${process.env.VUE_APP_API}/AvailableCountries`,
       );
       const countries = await resCountries.json();
 
@@ -36,32 +34,27 @@ export default defineComponent({
       // Obtener el próximo feriado para cada país
       this.randomCountries = await Promise.all(
         selectedCountries.map(async (country) => {
-          // Solicitar los feriados del país específico usando la variable de entorno
           const resHolidays = await fetch(
-            `${process.env.VUE_APP_API}/NextPublicHolidays/${country.countryCode}`
+            `${process.env.VUE_APP_API}/NextPublicHolidays/${country.countryCode}`,
           );
           const holidays = await resHolidays.json();
 
-          // Filtrar feriados para obtener el más próximo (después de la fecha actual)
           const nextHoliday = holidays.length > 0 ? holidays[0] : null;
 
-          // Devolver el país y su próximo feriado
           return {
             name: country.name,
             holidayName: nextHoliday ? nextHoliday.name : 'No upcoming holiday',
             date: nextHoliday ? nextHoliday.date : 'N/A',
           };
-        })
+        }),
       );
     },
 
-    // Función para seleccionar una cantidad específica de elementos de un array
     getRandomItems(array: any[], count: number) {
-      return array.sort(() => 0.5 - Math.random()).slice(0, count); // Selecciona países aleatorios
+      return array.sort(() => 0.5 - Math.random()).slice(0, count);
     },
   },
   mounted() {
-    // Llamar a la función para obtener los países y feriados cuando el componente esté montado
     this.fetchRandomCountries();
   },
 });

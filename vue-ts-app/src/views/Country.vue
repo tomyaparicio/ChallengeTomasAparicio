@@ -1,11 +1,7 @@
 <template>
   <div class="country-page">
-    <!-- Botón para volver a la vista principal, ubicado en la esquina superior izquierda -->
     <button class="back-button" @click="goBack">Back</button>
-
     <h1>Holidays ({{ selectedYear }})</h1>
-
-    <!-- Botones para cambiar el año -->
     <div class="year-buttons">
       <button
         v-for="year in years"
@@ -17,8 +13,6 @@
         {{ year }}
       </button>
     </div>
-
-    <!-- Lista de feriados -->
     <div v-if="holidays.length > 0" class="holidays-list">
       <div v-for="holiday in holidays" :key="holiday.date" class="holiday-item">
         <p>
@@ -45,38 +39,30 @@ interface Holiday {
 export default defineComponent({
   data() {
     return {
-      countryName: '', // Nombre del país
-      holidays: [] as Holiday[], // Lista de feriados
-      selectedYear: new Date().getFullYear(), // Año seleccionado (por defecto es el actual)
-      years: Array.from({ length: 11 }, (_, i) => 2020 + i), // Años disponibles del 2020 al 2030
+      countryName: '',
+      holidays: [] as Holiday[],
+      selectedYear: new Date().getFullYear(),
+      years: Array.from({ length: 11 }, (_, i) => 2020 + i),
     };
   },
   methods: {
     async fetchHolidays(year: number) {
-      this.selectedYear = year; // Cambia el año seleccionado
-
-      // Accede al código del país desde la propiedad `this.$route.params`
+      this.selectedYear = year;
       const countryCode = this.$route.params.countryCode as string;
-
       if (!countryCode) {
         console.error('Country code not found');
         return;
       }
-
-      // Uso de la variable de entorno para la URL base
       const res = await fetch(
         `${process.env.VUE_APP_API}/PublicHolidays/${year}/${countryCode}`,
       );
       this.holidays = await res.json();
     },
-
-    // Método para volver a la página anterior o a la vista principal
     goBack() {
-      this.$router.back(); // Vuelve a la página anterior
+      this.$router.back();
     },
   },
   mounted() {
-    // Llama a la función cuando el componente está montado para mostrar el año actual
     this.fetchHolidays(this.selectedYear);
   },
 });
@@ -94,7 +80,7 @@ export default defineComponent({
   text-align: center;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
-  position: relative; /* Para que el botón "Back" se posicione correctamente */
+  position: relative;
   animation: fadeIn 0.5s ease-in-out;
 }
 
